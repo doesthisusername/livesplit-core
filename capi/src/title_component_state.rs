@@ -1,7 +1,8 @@
 //! The state object describes the information to visualize for this component.
 
-use super::{output_str, Nullablec_char};
+use super::{output_str, Nullablec_char, output_has_color, output_color, output_color_or_default};
 use livesplit_core::component::title::State as TitleComponentState;
+use livesplit_core::GeneralLayoutSettings;
 use std::os::raw::c_char;
 use std::ptr;
 
@@ -48,6 +49,26 @@ pub extern "C" fn TitleComponentState_line2(this: &TitleComponentState) -> *cons
     this.line2
         .last()
         .map_or_else(ptr::null, |abbrev| output_str(&abbrev))
+}
+
+/// The RGBA color value of the title text to visualize, or the layout default if not overridden for this component.
+/// This will usually be the preferred function to use.
+#[no_mangle]
+pub extern "C" fn TitleComponentState_text_color_or_default(this: &TitleComponentState, settings: &GeneralLayoutSettings) -> u32 {
+    output_color_or_default(this.text_color, settings)
+}
+
+/// Whether the title text has its own color, or uses the default color from the layout.
+#[no_mangle]
+pub extern "C" fn TitleComponentState_has_text_color(this: &TitleComponentState) -> bool {
+    output_has_color(this.text_color)
+}
+
+/// The RGBA color value of the title text to visualize.
+/// Do not call this unless you know that this component doesn't inherit text color from the layout itself.
+#[no_mangle]
+pub extern "C" fn TitleComponentState_text_color(this: &TitleComponentState) -> u32 {
+    output_color(this.text_color.expect("Color is None"))
 }
 
 /// Specifies whether the title should centered or aligned to the left
