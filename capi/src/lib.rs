@@ -77,7 +77,7 @@ use crate::{
     run_metadata_speedrun_com_variable::RunMetadataSpeedrunComVariable,
     segment_history_element::SegmentHistoryElement,
 };
-use livesplit_core::{Time, TimeSpan};
+use livesplit_core::{settings::Color, GeneralLayoutSettings, Time, TimeSpan};
 
 /// type
 pub type Json = *const c_char;
@@ -124,6 +124,18 @@ where
         output.push(0);
         output.as_ptr() as *const c_char
     })
+}
+
+fn output_has_color(color: Option<Color>) -> bool {
+    color.is_some()
+}
+
+fn output_color(color: Color) -> u32 {
+    u32::from_ne_bytes(color.to_rgba8())
+}
+
+fn output_color_or_default(color: Option<Color>, settings: &GeneralLayoutSettings) -> u32 {
+    u32::from_ne_bytes(color.unwrap_or(settings.text_color).to_rgba8())
 }
 
 unsafe fn str(s: *const c_char) -> &'static str {

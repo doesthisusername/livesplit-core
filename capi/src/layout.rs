@@ -5,7 +5,7 @@ use super::{get_file, output_vec, release_file, str, Json};
 use crate::component::OwnedComponent;
 use crate::layout_state::OwnedLayoutState;
 use livesplit_core::layout::{parser, LayoutSettings, LayoutState};
-use livesplit_core::{Layout, Timer};
+use livesplit_core::{GeneralLayoutSettings, Layout, Timer};
 use std::io::{BufReader, Cursor};
 use std::slice;
 
@@ -128,6 +128,12 @@ pub extern "C" fn Layout_settings_as_json(this: &Layout) -> Json {
     output_vec(|o| {
         this.settings().write_json(o).unwrap();
     })
+}
+
+/// Gets a reference to the layout's general settings.
+#[no_mangle]
+pub extern "C" fn Layout_general_settings(this: &Layout) -> &GeneralLayoutSettings {
+    this.general_settings()
 }
 
 /// Adds a new component to the end of the layout.

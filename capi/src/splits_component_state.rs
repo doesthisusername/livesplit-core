@@ -119,6 +119,12 @@ pub extern "C" fn SplitsComponentState_column_semantic_color(
     })
 }
 
+/// The RGBA color value of the cell to visualize.
+#[no_mangle]
+pub extern "C" fn SplitsComponentState_column_color(this: &SplitsComponentState, index: usize, column_index: usize) -> u32 {
+    output_color(this.splits[index].columns[column_index].visual_color)
+}
+
 /// Describes if the segment with the specified index is the segment the active
 /// attempt is currently on.
 #[no_mangle]
