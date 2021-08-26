@@ -1,6 +1,6 @@
 //! The state object that describes a single segment's information to visualize.
 
-use super::{output_str, output_vec};
+use super::{output_str, output_vec, output_color};
 use livesplit_core::component::splits::State as SplitsComponentState;
 use std::io::Write;
 use std::os::raw::c_char;
