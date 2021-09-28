@@ -1,7 +1,8 @@
 //! The state object describes the information to visualize for this component.
 
-use super::{output_str, output_vec, Nullablec_char};
+use super::{output_str, output_vec, output_color, Nullablec_char};
 use livesplit_core::component::detailed_timer::State as DetailedTimerComponentState;
+use livesplit_core::settings::Color;
 use std::io::Write;
 use std::os::raw::c_char;
 use std::ptr;
@@ -162,4 +163,32 @@ pub extern "C" fn DetailedTimerComponentState_segment_name(
     this.segment_name
         .as_ref()
         .map_or_else(ptr::null, output_str)
+}
+
+/// The RGBA color value of the main timer text.
+#[no_mangle]
+pub extern "C" fn DetailedTimerComponentState_timer_color(this: &DetailedTimerComponentState) -> u32 {
+    // Top color for now.
+    let color = Color {
+        red: this.timer.top_color.red,
+        green: this.timer.top_color.green,
+        blue: this.timer.top_color.blue,
+        alpha: this.timer.top_color.alpha,
+    };
+
+    output_color(color)
+}
+
+/// The RGBA color value of the segment timer text.
+#[no_mangle]
+pub extern "C" fn DetailedTimerComponentState_segment_timer_color(this: &DetailedTimerComponentState) -> u32 {
+    // Top color for now.
+    let color = Color {
+        red: this.segment_timer.top_color.red,
+        green: this.segment_timer.top_color.green,
+        blue: this.segment_timer.top_color.blue,
+        alpha: this.segment_timer.top_color.alpha,
+    };
+
+    output_color(color)
 }

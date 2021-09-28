@@ -36,12 +36,12 @@ pub extern "C" fn TimerComponentState_semantic_color(this: &TimerComponentState)
 /// The RGBA color value of the timer text.
 #[no_mangle]
 pub extern "C" fn TimerComponentState_color(this: &TimerComponentState) -> u32 {
-    // Average for now.
+    // Top color for now.
     let color = Color {
-        red: (this.top_color.red + this.bottom_color.red) / 2.0,
-        green: (this.top_color.green + this.bottom_color.green) / 2.0,
-        blue: (this.top_color.blue + this.bottom_color.blue) / 2.0,
-        alpha: (this.top_color.alpha + this.bottom_color.alpha) / 2.0,
+        red: this.top_color.red,
+        green: this.top_color.green,
+        blue: this.top_color.blue,
+        alpha: this.top_color.alpha,
     };
 
     output_color(color)
